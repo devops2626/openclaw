@@ -1,0 +1,617 @@
+# Instincts generated from https://github.com/devops2626/openclaw
+# Generated: 2026-07-28T09:14:53.590Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: openclaw-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: fix, refactor, feat, test, perf
+
+## Evidence
+
+- 200 commits analyzed
+- Detected conventional commit pattern
+- Examples: build(deps): bump actions/checkout from 6.0.2 to 7.0.1, fix(ui): draw themed chevron on settings selects instead of native arrow (#114923)
+
+---
+id: openclaw-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Commit Length
+
+## Action
+
+Write moderate-length commit messages (~67 characters)
+
+## Evidence
+
+- Average commit message length: 67 chars
+- Based on 200 commits
+
+---
+id: openclaw-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Naming Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: kebab-case
+
+---
+id: openclaw-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: openclaw-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: acp, agents, audit, auto-reply, bindings
+
+---
+id: openclaw-test-colocate
+trigger: "when writing tests"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Test Colocate
+
+## Action
+
+Place test file next to the source file (e.g., Button.test.tsx next to Button.tsx)
+
+## Evidence
+
+- Colocated test pattern detected
+- Tests live alongside source files
+
+---
+id: openclaw-test-framework
+trigger: "when writing tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Test Framework
+
+## Action
+
+Use vitest as the test framework
+
+## Evidence
+
+- Test framework detected: vitest
+- File pattern: *.test.ts
+
+---
+id: openclaw-test-naming
+trigger: "when creating a test file"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Test Naming
+
+## Action
+
+Name test files using the pattern: *.test.ts
+
+## Evidence
+
+- File pattern: *.test.ts
+- Consistent across test files
+
+---
+id: openclaw-test-mocking
+trigger: "when mocking dependencies in tests"
+confidence: 0.75
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Test Mocking
+
+## Action
+
+Use vi.mock for mocking
+
+## Evidence
+
+- Mocking pattern detected: vi.mock
+- Consistent across test files
+
+---
+id: openclaw-test-types
+trigger: "when planning tests for a feature"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Test Types
+
+## Action
+
+Write unit, integration, e2e tests to match project standards
+
+## Evidence
+
+- Test types detected: unit, integration, e2e
+- Coverage config: yes
+
+---
+id: openclaw-workflow-refactoring
+trigger: "when refactoring code"
+confidence: 0.75
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Refactoring
+
+## Action
+
+Follow the refactoring workflow:
+1. Ensure tests pass before refactor
+2. Refactor code structure
+3. Verify tests still pass
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~5x per month
+- Files: src/**/*
+
+---
+id: openclaw-workflow-feature-development-with-tests-and-docs
+trigger: "when doing feature development with tests and docs"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Feature Development With Tests And Docs
+
+## Action
+
+Follow the feature-development-with-tests-and-docs workflow:
+1. Implement or modify feature logic in main source files.
+2. Add or update corresponding test files (often *.test.ts or *.test.swift).
+3. Update or add relevant documentation files (docs/*.md).
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~10x per month
+- Files: src/**/*.ts, extensions/**/*.ts, apps/**/*.swift
+
+---
+id: openclaw-workflow-api-or-schema-evolution
+trigger: "when doing api or schema evolution"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Api Or Schema Evolution
+
+## Action
+
+Follow the api-or-schema-evolution workflow:
+1. Modify or add files under packages/gateway-protocol/src/schema* or similar schema/type files.
+2. Update validator or registry files to match schema changes.
+3. Update or add related test files for schema validation.
+4. Update documentation if public contract changed.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: packages/gateway-protocol/src/schema*.ts, packages/gateway-protocol/src/validator-registry.ts, packages/gateway-protocol/src/schema-export-registry.ts
+
+---
+id: openclaw-workflow-extension-or-plugin-enhancement-with-tests
+trigger: "when doing extension or plugin enhancement with tests"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Extension Or Plugin Enhancement With Tests
+
+## Action
+
+Follow the extension-or-plugin-enhancement-with-tests workflow:
+1. Modify or add implementation files under extensions/<plugin>/src/.
+2. Update or add test files under the same extension.
+3. Update the extension's openclaw.plugin.json if needed.
+4. Optionally update related docs.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: extensions/*/src/*.ts, extensions/*/src/*.test.ts, extensions/*/openclaw.plugin.json
+
+---
+id: openclaw-workflow-ui-component-or-style-update-with-tests
+trigger: "when doing ui component or style update with tests"
+confidence: 0.65
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Ui Component Or Style Update With Tests
+
+## Action
+
+Follow the ui-component-or-style-update-with-tests workflow:
+1. Modify or add files under ui/src/components/ or ui/src/styles/.
+2. Add or update browser/e2e test files for the UI change.
+3. Optionally update related helpers or state controllers.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~3x per month
+- Files: ui/src/components/*.ts, ui/src/styles/*.css, ui/src/pages/**/*.ts
+
+---
+id: openclaw-workflow-fix-or-enhance-auth-provider-flow
+trigger: "when doing fix or enhance auth provider flow"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Fix Or Enhance Auth Provider Flow
+
+## Action
+
+Follow the fix-or-enhance-auth-provider-flow workflow:
+1. Modify or add files under src/agents/auth-profiles/, src/llm/utils/oauth/, or extensions/github-copilot/.
+2. Update or add corresponding test files.
+3. Optionally update documentation.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: src/agents/auth-profiles/*.ts, src/llm/utils/oauth/*.ts, src/llm/utils/oauth/*.test.ts
+
+---
+id: openclaw-workflow-cron-or-scheduler-feature-or-fix
+trigger: "when doing cron or scheduler feature or fix"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/devops2626/openclaw
+---
+
+# Openclaw Workflow Cron Or Scheduler Feature Or Fix
+
+## Action
+
+Follow the cron-or-scheduler-feature-or-fix workflow:
+1. Modify or add files under src/gateway/server-cron*, src/cron/, or src/gateway/server-methods/cron*.
+2. Update or add test files for cron logic.
+3. Optionally update protocol/schema files if contract changes.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: src/gateway/server-cron*.ts, src/gateway/server-cron*.test.ts, src/cron/**/*.ts
+
+---
+id: openclaw-instinct-naming-conventions
+trigger: "When creating or renaming files, functions, classes, or constants"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Naming Conventions
+
+## Action
+
+Use kebab-case for files, camelCase for functions, PascalCase for classes, and SCREAMING_SNAKE_CASE for constants
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions
+- Consistent usage in src/, extensions/, packages/
+
+---
+id: openclaw-instinct-import-export-style
+trigger: "When importing or exporting modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Import Export Style
+
+## Action
+
+Prefer named exports and use a mix of import styles as appropriate
+
+## Evidence
+
+- Pattern in codeStyle.importStyle and codeStyle.exportStyle
+- Seen in multiple *.ts files across src/ and extensions/
+
+---
+id: openclaw-instinct-test-file-pattern
+trigger: "When writing tests for TypeScript code"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Test File Pattern
+
+## Action
+
+Place tests in files ending with .test.ts, colocated with the source or in a test/ folder
+
+## Evidence
+
+- Pattern in testing.filePattern
+- Files like extensions/github-copilot/index.test.ts, src/agents/agent-hooks/compaction-safeguard.test.ts
+
+---
+id: openclaw-instinct-testing-framework
+trigger: "When setting up or writing tests"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Testing Framework
+
+## Action
+
+Use the vitest framework and vi.mock for mocking
+
+## Evidence
+
+- Pattern in testing.framework and testing.mockingStyle
+- Presence of vitest.config.ts and vi.mock usage in test files
+
+---
+id: openclaw-instinct-test-coverage-config
+trigger: "When configuring test coverage"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Test Coverage Config
+
+## Action
+
+Ensure coverage is enabled in vitest configuration
+
+## Evidence
+
+- Pattern in testing.coverageConfig
+- Presence of coverage config in vitest.config.ts
+
+---
+id: openclaw-instinct-git-commit-format
+trigger: "When writing a commit message"
+confidence: 0.95
+domain: git
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Git Commit Format
+
+## Action
+
+Use Conventional Commits format: <type>(<scope>): <description> (e.g., fix(ui): ...)
+
+## Evidence
+
+- Pattern in commits.type and commits.prefixes
+- Examples like fix(ui): draw themed chevron on settings selects instead of native arrow (#114923)
+
+---
+id: openclaw-instinct-feature-development
+trigger: "When adding a new feature or enhancing an existing one"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Feature Development
+
+## Action
+
+Implement or modify feature logic, add/update tests (*.test.ts or *.test.swift), and update docs (*.md)
+
+## Evidence
+
+- Workflow: feature-development-with-tests-and-docs
+- Example commits and files in src/, extensions/, docs/
+
+---
+id: openclaw-instinct-api-schema-evolution
+trigger: "When changing API endpoints or data structures"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Api Schema Evolution
+
+## Action
+
+Update schema/type files, validators, related tests, and documentation
+
+## Evidence
+
+- Workflow: api-or-schema-evolution
+- Files in packages/gateway-protocol/src/schema*.ts, validator-registry.ts, docs/
+
+---
+id: openclaw-instinct-extension-plugin-enhancement
+trigger: "When enhancing or fixing an extension/plugin"
+confidence: 0.92
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Extension Plugin Enhancement
+
+## Action
+
+Modify implementation and test files in extensions/<plugin>/src/, update openclaw.plugin.json, and optionally docs
+
+## Evidence
+
+- Workflow: extension-or-plugin-enhancement-with-tests
+- Files in extensions/*/src/*.ts, extensions/*/src/*.test.ts, extensions/*/openclaw.plugin.json
+
+---
+id: openclaw-instinct-ui-component-style-update
+trigger: "When adding or updating a UI component or style"
+confidence: 0.88
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Ui Component Style Update
+
+## Action
+
+Modify files in ui/src/components/ or ui/src/styles/, add/update browser/e2e tests, optionally update helpers/state controllers
+
+## Evidence
+
+- Workflow: ui-component-or-style-update-with-tests
+- Files in ui/src/components/*.ts, ui/src/styles/*.css, ui/src/e2e/*.test.ts
+
+---
+id: openclaw-instinct-auth-provider-flow-fix
+trigger: "When fixing or enhancing authentication flows (OAuth, Copilot tokens, etc.)"
+confidence: 0.87
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Auth Provider Flow Fix
+
+## Action
+
+Modify files in src/agents/auth-profiles/, src/llm/utils/oauth/, or extensions/github-copilot/, update/add tests, optionally update docs
+
+## Evidence
+
+- Workflow: fix-or-enhance-auth-provider-flow
+- Files in src/agents/auth-profiles/*.ts, src/llm/utils/oauth/*.ts, extensions/github-copilot/*.ts
+
+---
+id: openclaw-instinct-cron-scheduler-fix
+trigger: "When adding, fixing, or refactoring cron or scheduling features"
+confidence: 0.85
+domain: workflow
+source: repo-analysis
+source_repo: devops2626/openclaw
+---
+
+# Openclaw Instinct Cron Scheduler Fix
+
+## Action
+
+Modify files in src/gateway/server-cron*, src/cron/, or src/gateway/server-methods/cron*, update/add tests, optionally update protocol/schema files
+
+## Evidence
+
+- Workflow: cron-or-scheduler-feature-or-fix
+- Files in src/gateway/server-cron*.ts, src/cron/**/*.ts, packages/gateway-protocol/src/schema/cron.ts
+
