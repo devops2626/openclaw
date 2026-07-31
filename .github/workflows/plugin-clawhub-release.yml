@@ -388,7 +388,7 @@ jobs:
     needs:
       [preview_plugins_clawhub, pack_plugins_clawhub_artifacts, approve_plugins_clawhub_release]
     if: always() && github.event_name == 'workflow_dispatch' && needs.preview_plugins_clawhub.outputs.has_candidates == 'true' && needs.pack_plugins_clawhub_artifacts.result == 'success' && (inputs.dry_run == true || needs.approve_plugins_clawhub_release.result == 'success')
-    uses: openclaw/clawhub/.github/workflows/package-publish.yml@79ef4af17f5219f0f919d964b0059402a37850e1
+    uses: openclaw/clawhub/.github/workflows/package-publish.yml@5b969f983595df297d3a440edbaed811c7c1d0dc
     permissions:
       actions: read
       contents: read
