@@ -1312,7 +1312,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.preflight.outputs.checkout_revision }}
           persist-credentials: false
@@ -1706,7 +1706,7 @@ jobs:
 
       - name: Set up Blacksmith Docker layer cache
         if: ${{ matrix.docker_cache == true && github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') }}
-        uses: useblacksmith/setup-docker-builder@33803e640bd9d674f2843a8c323aa2a7da478d23 # v2.0.0
+        uses: useblacksmith/setup-docker-builder@1e75355f81cbb3f93cba1eb5dd5e5b05110ca8f9 # v2.0.1
         with:
           max-cache-size-mb: 800000
 
@@ -3384,7 +3384,7 @@ jobs:
           exit 1
 
       - name: Checkout CI Android toolchain action
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.workflow_sha }}
           path: .ci-workflow
@@ -3638,7 +3638,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout timing summary helper
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || needs.preflight.outputs.checkout_revision || github.sha }}
           fetch-depth: 1
