@@ -66,7 +66,7 @@ for (let index = 0; index < packageArgs.length; index += 3) {
   const tarballPath = packageArgs[index + 2];
   const archive = fs.readFileSync(tarballPath);
   const existing = packages.get(packageName) ?? {
-    encodedPackageName: encodeURIComponent(packageName).replace("%40", "@"),
+    encodedPackageName: encodeURIComponent(packageName).replace(/%40/g, "@"),
     packageName,
     latestVersion: version,
     versions: new Map(),
