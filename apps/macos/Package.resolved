@@ -1,5 +1,9 @@
 {
-  "originHash" : "b1fca7932236d35a0df28bd50c14f51ef5e5faee1859c9bc9be7c0bd3477d44c",
+
+  "originHash" : "b32db3cd32ee61dfef8a2a0f60b1ef07a12bdf8b015569aada6fa4f3f92a8c1d",
+
+  "originHash" : "c7d7be17bbf242789898dde0dea25ba33f5a0efd52edc555d464b49545ed7c1a",
+
   "pins" : [
     {
       "identity" : "axorcist",
@@ -105,8 +109,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "a878e7f8f46cfc0e1125e565b5c08e7d5272dc9a",
-        "version" : "1.14.0"
+        "revision" : "3ffafb9722d5d918c614feb496c8789a3b59d222",
+        "version" : "1.15.0"
       }
     },
     {
@@ -132,8 +136,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-subprocess.git",
       "state" : {
-        "revision" : "11633673a41f509f8945f23c96c7acd4adafd679",
-        "version" : "0.5.0"
+        "revision" : "b3937ab85dd32f6e9435914599c1519074769c1a",
+        "version" : "1.0.0"
       }
     },
     {
