@@ -480,11 +480,16 @@ WhatsApp runs through the gateway's web channel (Baileys Web). It starts automat
   `allowFrom: ["*"]`. Channel and user policies must use stable Slack IDs;
   mutable names and unsupported channel prefixes fail startup. V1 handles only
   direct Socket Mode or HTTP `message` and `app_mention` events with immediate
-  replies; relay, commands, interactions, App Home, reaction event listeners,
-  pins, action tools, native approvals, bindings, deferred delivery, and
-  proactive sends are unavailable. Listener-owned acknowledgment, typing, and
-  status reactions remain available with `reactions:write`; inbound reaction
-  notifications and reaction action tools are unavailable. See
+  replies; relay, commands, general interactions, App Home, reaction event
+  listeners, pins, action tools, bindings, deferred delivery, and proactive
+  sends are unavailable. Slack-native exec approval buttons remain available
+  when `execApprovals.approvers` contains an explicit
+  `team:<team-id>:user:<user-id>` target for the originating workspace. Raw
+  approvers and `commands.ownerAllowFrom` fallback are ignored; native plugin
+  approvals remain unavailable. Listener-owned
+  acknowledgment, typing, and status reactions remain available with
+  `reactions:write`; inbound reaction notifications and reaction action tools
+  are unavailable. See
   [Enterprise Grid org-wide installs](/channels/slack#enterprise-grid-org-wide-installs)
   for the least-privilege manifest, setup workflow, and complete restrictions.
 - `botToken`, `appToken`, `signingSecret`, and `userToken` accept plaintext
@@ -508,7 +513,7 @@ WhatsApp runs through the gateway's web channel (Baileys Web). It starts automat
 
 - Slack native streaming plus the Slack assistant-style "is typing..." thread status require a reply thread target. Top-level DMs stay off-thread by default, so they can still stream through Slack draft post-and-edit previews instead of showing the thread-style native stream/status preview.
 - `typingReaction` adds a temporary reaction to the inbound Slack message while a reply is running, then removes it on completion. Use a Slack emoji shortcode such as `"hourglass_flowing_sand"`.
-- `channels.slack.execApprovals`: Slack-native approval-client delivery and exec approver authorization. Same schema as Discord: `enabled` (`true`/`false`/`"auto"`), `approvers` (Slack user IDs), `agentFilter`, `sessionFilter`, and `target` (`"dm"`, `"channel"`, or `"both"`). Plugin approvals can use this native-client path for Slack-origin requests when Slack plugin approvers resolve; Slack-native plugin approval delivery can also be enabled through `approvals.plugin` for Slack-origin sessions or Slack targets. Plugin approvals use Slack plugin approvers from `allowFrom` and default routing, not exec approvers.
+- `channels.slack.execApprovals`: Slack-native approval-client delivery and exec approver authorization: `enabled` (`true`/`false`/`"auto"`), `approvers`, `agentFilter`, `sessionFilter`, and `target` (`"dm"`, `"channel"`, or `"both"`). Workspace installs accept Slack user IDs and can fall back to `commands.ownerAllowFrom`; plugin approvals use workspace Slack approvers from `allowFrom` and default routing, not exec approvers. Enterprise Grid accounts require explicit `team:<team-id>:user:<user-id>` exec approvers matching the originating team, ignore raw and owner-fallback approvers, and do not support native plugin approvals.
 
 | Action group | Default | Notes                  |
 | ------------ | ------- | ---------------------- |
@@ -605,7 +610,7 @@ OpenClaw spawns `imsg rpc` (JSON-RPC over stdio). No daemon or port required. Th
 
 BlueBubbles support was removed. `channels.bluebubbles` is not a supported runtime config surface on current OpenClaw. Migrate old configs to `channels.imessage`; use [BlueBubbles removal and the imsg iMessage path](/announcements/bluebubbles-imessage) for the short version and [Coming from BlueBubbles](/channels/imessage-from-bluebubbles) for the full translation table.
 
-If the Gateway is not running on the signed-in Messages Mac, keep `channels.imessage.enabled=true` and set `channels.imessage.cliPath` to an SSH wrapper that runs `imsg "$@"` on that Mac. The default local `imsg` path is macOS-only.
+If the Gateway is not running on the signed-in Messages Mac, keep `channels.imessage.enabled=true` and set `channels.imessage.cliPath` to the absolute path of a Gateway-local SSH wrapper that runs `imsg "$@"` on that Mac. Set `remoteHost` to the Messages Mac, not the Gateway host. OpenClaw auto-detects simple transparent SSH wrappers for compatibility, but complex wrappers require explicit `remoteHost`. The default local `imsg` path is macOS-only.
 
 Before relying on an SSH wrapper for production sends, verify an outbound `imsg send` through that exact wrapper. Some macOS TCC states assign Messages Automation to `/usr/libexec/sshd-keygen-wrapper`, which can make reads and probes work while sends fail with AppleEvents `-1743`; see the SSH wrapper troubleshooting section on [iMessage](/channels/imessage).
 
@@ -614,9 +619,9 @@ Before relying on an SSH wrapper for production sends, verify an outbound `imsg 
   channels: {
     imessage: {
       enabled: true,
-      cliPath: "imsg",
-      dbPath: "~/Library/Messages/chat.db",
-      remoteHost: "user@gateway-host",
+      cliPath: "/home/openclaw/.openclaw/scripts/imsg-ssh",
+      dbPath: "/Users/user/Library/Messages/chat.db",
+      remoteHost: "user@messages-mac",
       dmPolicy: "pairing",
       allowFrom: ["+15555550123", "user@example.com", "chat_id:123"],
       historyLimit: 50,
@@ -643,9 +648,10 @@ Before relying on an SSH wrapper for production sends, verify an outbound `imsg 
 - Optional `channels.imessage.defaultAccount` overrides default account selection when it matches a configured account id.
 - Requires Full Disk Access to the Messages DB.
 - Prefer `chat_id:<id>` targets. Use `imsg chats --limit 20` to list chats.
-- `cliPath` can point to an SSH wrapper; set `remoteHost` (`host` or `user@host`) for SCP attachment fetching.
+- For SSH setups, `cliPath` is an absolute path on the Gateway host. `remoteHost` (`host` or `user@host`) is the Messages Mac, and `dbPath` is interpreted on that Mac. Use an absolute remote database path rather than expanding it from the Gateway user's home.
+- A configured or auto-detected `remoteHost` enables inbound attachment fetches and outbound file staging over the existing strict SSH/SCP transport. Outbound files use an owner-only remote temporary path with best-effort cleanup after success, failure, or timeout; cleanup failure warns and can leave owner-only residue.
 - `attachmentRoots` and `remoteAttachmentRoots` restrict inbound attachment paths (default: `/Users/*/Library/Messages/Attachments`).
-- SCP uses strict host-key checking, so ensure the relay host key already exists in `~/.ssh/known_hosts`.
+- SCP uses strict host-key checking, so ensure the Messages Mac host key already exists in `~/.ssh/known_hosts`.
 - `channels.imessage.configWrites`: allow or deny iMessage-initiated config writes.
 - `channels.imessage.sendTransport`: preferred `imsg` RPC send transport for normal outbound replies. `auto` (default) uses the IMCore bridge for existing chats when it is running, then falls back to AppleScript; `bridge` requires private-API delivery; `applescript` forces the public Messages automation path.
 - `channels.imessage.actions.*`: enable private API actions that are also gated by `imsg status` / `openclaw channels status --probe`.
@@ -658,8 +664,10 @@ Before relying on an SSH wrapper for production sends, verify an outbound `imsg 
 
 ```bash
 #!/usr/bin/env bash
-exec ssh -T gateway-host imsg "$@"
+exec ssh -T messages-mac imsg "$@"
 ```
+
+With remote `imsg` v0.13.4, poll votes must use `pollOptionId`; its `poll.vote` RPC method does not resolve index or text selectors. Attachment replies to nonzero part indices are also unavailable remotely. These limits do not change local `imsg` behavior.
 
 </Accordion>
 

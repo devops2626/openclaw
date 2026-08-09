@@ -38,10 +38,8 @@ import type { ChatRunStartupStatus } from "./chat-run-startup.ts";
 import type { ChatSessionCompanionThread } from "./chat-session-companion.ts";
 import { renderChatViewNotices } from "./chat-view-notices.ts";
 import { createChatAttachmentDropHandlers } from "./components/chat-attachments.ts";
-import {
-  renderBackgroundTasksRail,
-  type BackgroundTasksProps,
-} from "./components/chat-background-tasks.ts";
+import { renderBackgroundTasksRail } from "./components/chat-background-tasks-render.ts";
+import type { BackgroundTasksProps } from "./components/chat-background-tasks.types.ts";
 import type {
   CapabilityMenuProps,
   ChatComposerDisabledBanner,
@@ -85,6 +83,7 @@ type ChatReplyTarget = {
 
 export type ChatProps = {
   transcript: ChatTranscriptController;
+  backgroundTaskTranscript?: ChatTranscriptController;
   paneId: string;
   sessionKey: string;
   announceTranscript?: boolean;
@@ -197,6 +196,7 @@ export type ChatProps = {
   readSignal?: AbortSignal;
   onPendingReadsChange?: (delta: 1 | -1) => void;
   onAttachmentsChange?: (attachments: ChatAttachment[]) => void;
+  onRemoveAttachment?: (attachment: ChatAttachment) => void;
   onAssistantAttachmentLoaded?: () => void;
   onRequestOpenImage?: () => number;
   onOpenImage?: (item: ImageLightboxItem, requestVersion?: number) => void;
@@ -254,9 +254,11 @@ export type ChatProps = {
   backgroundTasks?: BackgroundTasksProps;
   taskSuggestions?: TaskSuggestion[];
   taskSuggestionBusyIds?: ReadonlySet<string>;
+  taskSuggestionCloudProfiles?: Array<{ id: string }>;
   canAcceptTaskSuggestions?: boolean;
+  canAcceptTaskSuggestionModes?: boolean;
   canDismissTaskSuggestions?: boolean;
-  onAcceptTaskSuggestion?: (suggestion: TaskSuggestion) => void;
+  onAcceptTaskSuggestion?: Parameters<typeof renderChatTaskSuggestions>[0]["onAccept"];
   onDismissTaskSuggestion?: (suggestion: TaskSuggestion) => void;
   sessionSuggestions?: readonly SessionSuggestion[];
   sessionSuggestionRole?: SessionSharingRole;
@@ -390,6 +392,55 @@ export function renderChat(props: ChatProps) {
     },
     props.transcript,
   );
+  const backgroundTaskView = props.backgroundTasks?.view;
+  const backgroundTaskTranscript = props.backgroundTaskTranscript;
+  const backgroundTaskThread =
+    backgroundTaskTranscript &&
+    backgroundTaskView?.kind === "transcript" &&
+    backgroundTaskView.load.status === "loaded" &&
+    backgroundTaskView.load.messages.length > 0
+      ? renderChatThread(
+          {
+            paneId: `${props.paneId}:background-task-transcript`,
+            sessionKey: backgroundTaskView.sessionKey,
+            announceTranscript: false,
+            loading: false,
+            messages: backgroundTaskView.load.messages,
+            toolMessages: [],
+            streamSegments: [],
+            stream: null,
+            streamStartedAt: null,
+            runId: null,
+            queue: [],
+            showThinking: props.showThinking,
+            showToolCalls: props.showToolCalls,
+            persistCommentary: props.persistCommentary,
+            sessions: props.sessions,
+            sessionHost: props.sessionHost,
+            gatewayUrl: props.gatewayUrl,
+            assistantName: props.assistantName,
+            assistantAvatar: props.assistantAvatar,
+            assistantAvatarUrl: props.assistantAvatarUrl,
+            userId: props.userId,
+            userName: props.userName,
+            userAvatar: props.userAvatar,
+            basePath: props.basePath,
+            fullMessageAgentId: props.fullMessageAgentId,
+            loadFullAssistantMessage: props.loadFullAssistantMessage,
+            localMediaPreviewRoots: props.localMediaPreviewRoots,
+            assistantAttachmentAuthToken: props.assistantAttachmentAuthToken,
+            resolveArtifactDownload: props.resolveArtifactDownload,
+            canvasPluginSurfaceUrl: props.canvasPluginSurfaceUrl,
+            embedSandboxMode: props.embedSandboxMode,
+            allowExternalEmbedUrls: props.allowExternalEmbedUrls,
+            autoExpandToolCalls: props.autoExpandToolCalls,
+            onRequestUpdate: requestUpdate,
+            onDraftChange: () => undefined,
+            onSend: () => undefined,
+          },
+          backgroundTaskTranscript,
+        )
+      : nothing;
 
   const chatColumnFooter = renderChatComposer({
     paneId: props.paneId,
@@ -467,6 +518,7 @@ export function renderChat(props: ChatProps) {
     onNewSession: props.onNewSession,
     onClearReply: props.onClearReply,
     onAttachmentsChange: props.onAttachmentsChange,
+    onRemoveAttachment: props.onRemoveAttachment,
   });
   const scrollToBottomButton =
     props.showNewMessages && props.onScrollToBottom
@@ -547,7 +599,7 @@ export function renderChat(props: ChatProps) {
           : ""} ${tasksDockBottom ? "chat-workbench--tasks-dock-bottom" : ""}"
       >
         ${renderSessionWorkspaceRail(props.sessionWorkspace)}
-        ${renderBackgroundTasksRail(props.backgroundTasks)}
+        ${renderBackgroundTasksRail(props.backgroundTasks, backgroundTaskThread)}
         ${props.sessionWorkspace?.dockDragging
           ? html`
               <div class="chat-workbench__dock-zones" aria-hidden="true">
@@ -578,7 +630,7 @@ export function renderChat(props: ChatProps) {
                 : ""}"
             >
               <div class="chat-main__conversation">
-                ${thread}
+                ${thread} ${scrollToBottomButton}
                 ${props.inlineApproval && props.onApprovalDecision
                   ? html`<div class="chat-inline-approval">
                       ${renderExecApprovalCard({
@@ -594,9 +646,12 @@ export function renderChat(props: ChatProps) {
                 ${renderChatTaskSuggestions({
                   suggestions: props.taskSuggestions ?? [],
                   busyIds: props.taskSuggestionBusyIds ?? new Set(),
+                  cloudProfiles: props.taskSuggestionCloudProfiles ?? [],
                   canAccept: props.canAcceptTaskSuggestions === true,
+                  canAcceptModes: props.canAcceptTaskSuggestionModes === true,
                   canDismiss: props.canDismissTaskSuggestions === true,
-                  onAccept: (suggestion) => props.onAcceptTaskSuggestion?.(suggestion),
+                  onAccept: (suggestion, mode, cloudProfileId) =>
+                    props.onAcceptTaskSuggestion?.(suggestion, mode, cloudProfileId),
                   onDismiss: (suggestion) => props.onDismissTaskSuggestion?.(suggestion),
                 })}
                 ${renderChatPullRequests({
@@ -616,7 +671,6 @@ export function renderChat(props: ChatProps) {
                   onResolve: (suggestion, resolution) =>
                     props.onResolveSessionSuggestion?.(suggestion, resolution),
                 })}
-                ${scrollToBottomButton}
                 ${renderChatSwarmProgress({
                   sessions: props.swarmSessions ?? [],
                   sessionKey: props.sessionKey,
