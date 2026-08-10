@@ -861,7 +861,6 @@ async function runGatewayPrompt(prompt: string): Promise<PromptResult> {
           },
           discovery: {
             mdns: { mode: "off" },
-            wideArea: { enabled: false },
           },
           ...(proxyPort
             ? {
