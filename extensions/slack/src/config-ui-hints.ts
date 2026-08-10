@@ -6,10 +6,6 @@ export const slackChannelConfigUiHints = {
     label: "Slack",
     help: "Slack channel provider configuration for bot/app tokens, streaming behavior, and DM policy controls. Keep token handling and thread behavior explicit to avoid noisy workspace interactions.",
   },
-  enterpriseOrgInstall: {
-    label: "Slack Enterprise Grid Org Install",
-    help: 'Enable only for an Enterprise Grid org-wide bot installation. OpenClaw verifies the token with Slack auth.test at startup; DMs must be disabled or use dmPolicy="open" with allowFrom=["*"].',
-  },
   postAs: {
     label: "Slack Identity",
     help: 'Select "bot" (default) for the classic Slack app/bot identity or "user" to post as the authorizing human through a user token while the app carries event transport.',
@@ -37,7 +33,7 @@ export const slackChannelConfigUiHints = {
       "preview.toolProgress":
         "Show tool/progress activity in the live draft preview message (default: true). Set false to hide interim tool updates while the draft preview stays active.",
       "preview.commandText":
-        'Command/exec detail in preview tool-progress lines: "raw" preserves released behavior; "status" shows only the tool label.',
+        'Command/exec detail in preview tool-progress lines: "status" is the safe default; "raw" opts into command text.',
       "progress.render":
         'Progress draft renderer: "text" uses one portable text body; "rich" renders structured Slack Block Kit fields with the same text fallback.',
       "progress.nativeTaskCards":
@@ -103,7 +99,7 @@ export const slackChannelConfigUiHints = {
   },
   execApprovals: {
     label: "Slack Exec Approvals",
-    help: "Slack-native exec approval routing and approver authorization. When unset, OpenClaw auto-enables DM-first native approvals if approvers can be resolved for this workspace account.",
+    help: "Slack-native exec approval routing and approver authorization. When unset, OpenClaw auto-enables DM-first native approvals if approvers can be resolved for this Slack account.",
   },
   presenceEvents: {
     label: "Slack Presence Events",
@@ -123,7 +119,7 @@ export const slackChannelConfigUiHints = {
   },
   "execApprovals.approvers": {
     label: "Slack Exec Approval Approvers",
-    help: "Slack users allowed to approve exec requests. Workspace installs accept IDs or user targets such as `U123`, `user:U123`, or `<@U123>` and can fall back to commands.ownerAllowFrom. Enterprise Grid accounts require explicit `team:T123:user:U123` targets; raw IDs and owner fallback are ignored.",
+    help: "Slack user IDs allowed to approve exec requests for this workspace account. Use Slack user IDs or user targets such as `U123`, `user:U123`, or `<@U123>`. If you leave this unset, OpenClaw falls back to commands.ownerAllowFrom when possible.",
   },
   "execApprovals.agentFilter": {
     label: "Slack Exec Approval Agent Filter",
