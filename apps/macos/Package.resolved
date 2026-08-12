@@ -1,9 +1,5 @@
 {
-
-  "originHash" : "b32db3cd32ee61dfef8a2a0f60b1ef07a12bdf8b015569aada6fa4f3f92a8c1d",
-
-  "originHash" : "c7d7be17bbf242789898dde0dea25ba33f5a0efd52edc555d464b49545ed7c1a",
-
+  "originHash" : "ddf4f73d92f294e266fc1fef5bf9b7ca60c8c4a3976cabdbc898706e5dd4299e",
   "pins" : [
     {
       "identity" : "axorcist",
@@ -55,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/orchetect/MenuBarExtraAccess",
       "state" : {
-        "revision" : "33bb0e4b1e407feac791e047dcaaf9c69b25fd26",
-        "version" : "1.3.0"
+        "revision" : "e93e3a5b814714bf4d4cea67bf63a6b6a8323968",
+        "version" : "1.3.1"
       }
     },
     {
@@ -64,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/steipete/Peekaboo.git",
       "state" : {
-        "revision" : "eae9bfa69b15109b75e5bec1288bf901b51f0fa9",
-        "version" : "3.9.10"
+        "revision" : "99209e374e8a6cd35c9705190a214ef42b68eecb",
+        "version" : "3.10.0"
       }
     },
     {
