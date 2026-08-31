@@ -98,7 +98,7 @@ jobs:
       cache_write_allowed: ${{ steps.candidate_trust.outputs.cache_write_allowed }}
     steps:
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout target metadata
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -300,7 +300,7 @@ jobs:
 
       - name: Prepare Git owner
         if: steps.lane.outputs.run == 'true'
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout OpenClaw
         if: steps.lane.outputs.run == 'true'
@@ -704,7 +704,7 @@ jobs:
       REQUESTED_REPEAT: ${{ inputs.repeat || '3' }}
     steps:
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout OpenClaw source target
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -1059,7 +1059,7 @@ jobs:
 
       - name: Prepare Git owner
         if: steps.lane.outputs.run == 'true'
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout performance publisher helper
         if: steps.lane.outputs.run == 'true'

@@ -196,7 +196,7 @@ jobs:
           NODE
 
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout selected ref
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -337,7 +337,7 @@ jobs:
             }
 
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout trusted QA harness
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -505,7 +505,7 @@ jobs:
             }
 
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout trusted QA harness
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -815,7 +815,7 @@ jobs:
             }
 
       - name: Prepare Git owner
-        uses: openclaw/openclaw/.github/actions/git-owner@dd4528b6393e7d00063067a080ca7241b48ce475
+        uses: openclaw/openclaw/.github/actions/git-owner@3ee32fb9c10dcf9d5713c0c4891e55227f5b1f0d
 
       - name: Checkout trusted QA harness
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
