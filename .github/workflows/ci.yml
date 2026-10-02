@@ -1598,7 +1598,7 @@ jobs:
 
       - name: Scan pull request for leaked credentials
         if: github.event_name == 'pull_request'
-        uses: trufflesecurity/trufflehog@bcfcf73aaf4759d4dadc2783177c245a02792318 # v3.97.0
+        uses: trufflesecurity/trufflehog@4dd8831c5f12599465d4d45c3c447b4018a34c85 # v3.97.9
         with:
           base: ${{ steps.diff_base.outputs.sha }}
           head: ${{ github.sha }}
@@ -3136,7 +3136,7 @@ jobs:
       # protected boundary lane may publish this repository-global snapshot.
       - name: Mount extension boundary sticky disk
         if: matrix.task == 'lint' && steps.extension-boundary-inputs.outputs.enabled == 'true' && vars.OPENCLAW_CI_RUNNER_BACKEND != 'github' && vars.OPENCLAW_CI_RUNNER_BACKEND != 'hybrid' && github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw')
-        uses: useblacksmith/stickydisk@35ba2e331a80056a42af053ee54968511de2b7c7 # v1.5.0
+        uses: useblacksmith/stickydisk@3f6be1451e3cad893b778bc93495c80452a5da26 # v1.7.2
         with:
           # One stable disk for the whole repository. The v1 per-PR/per-config
           # keys minted a new backing disk for every PR and toolchain change
@@ -3602,7 +3602,7 @@ jobs:
       # repository-global snapshots, so they keep the GitHub cache path.
       - name: Mount extension boundary sticky disk
         if: matrix.group == 'extension-package-boundary' && steps.extension-boundary-inputs.outputs.enabled == 'true' && vars.OPENCLAW_CI_RUNNER_BACKEND != 'github' && vars.OPENCLAW_CI_RUNNER_BACKEND != 'hybrid' && github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw')
-        uses: useblacksmith/stickydisk@35ba2e331a80056a42af053ee54968511de2b7c7 # v1.5.0
+        uses: useblacksmith/stickydisk@3f6be1451e3cad893b778bc93495c80452a5da26 # v1.7.2
         with:
           # One stable disk for the whole repository. The v1 per-PR/per-config
           # keys minted a new backing disk for every PR and toolchain change
@@ -4540,7 +4540,7 @@ jobs:
       - *platform_checkout_step
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1
         with:
           ruby-version: "3.4.10"
           bundler: "2.6.9"
@@ -4781,7 +4781,7 @@ jobs:
       # runs-on already selects non-Blacksmith ubuntu-24.04 runners).
       - name: Mount Gradle sticky disk
         if: vars.OPENCLAW_CI_RUNNER_BACKEND != 'github' && !(vars.OPENCLAW_CI_RUNNER_BACKEND == 'hybrid' && github.run_attempt > 1) && github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw')
-        uses: useblacksmith/stickydisk@35ba2e331a80056a42af053ee54968511de2b7c7 # v1.5.0
+        uses: useblacksmith/stickydisk@3f6be1451e3cad893b778bc93495c80452a5da26 # v1.7.2
         with:
           # One stable disk per matrix task. The v1 per-PR/per-dependency-hash
           # keys minted a new backing disk for every PR and dependency bump
